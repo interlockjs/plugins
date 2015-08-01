@@ -1,0 +1,7 @@
+
+# added by GitSavvy
+/node_modules/
+
+# added by GitSavvy
+example/dist/*.js
+example/dist/*.map
