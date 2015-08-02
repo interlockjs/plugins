@@ -1,0 +1,31 @@
+{
+  "name": "interlock-json",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/interlock-json.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/interlock-json/issues"
+  },
+  "homepage": "https://github.com/interlockjs/interlock-json#readme",
+  "devDependencies": {
+    "babel": "^5.8.20",
+    "babel-eslint": "^4.0.5",
+    "eslint": "^1.0.0",
+    "eslint-config-defaults": "^3.1.0"
+  },
+  "dependencies": {
+    "handlebars": "^3.0.3"
+  }
+}
