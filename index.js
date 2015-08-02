@@ -1,18 +1,13 @@
-import _ from "lodash";
-import { parse } from "interlock/lib/compile/modules/load-ast";
-
 module.exports = function (opts={}) {
-  var isJson = opts.filter || /\.json$/;
+  var isJsonFile = opts.filter || /\.json$/;
 
   return function (override, transform, control) {
-    override("parseModule", function (asset) {
-      if (isJson.test(asset.path)) {
-        const modifiedSource = `module.exports = ${asset.rawSource};`;
-        return _.extend({}, asset, {
-          ast: parse(modifiedSource)
-        });
+    transform("readSource", function (source) {
+      const asset = this.args[0];
+      if (isJsonFile.test(asset.path)) {
+        source = `module.exports = ${source};`;
       }
-      return control.CONTINUE;
+      return source;
     });
   };
 };
