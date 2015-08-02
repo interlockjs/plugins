@@ -39,18 +39,19 @@ function getHbsRequires (ast, knownHelpers, extension) {
   depsVisitor.accept(ast);
 
   depsVisitor.partials.forEach(partial => {
-    const partialName = partial.name.name.endsWith("." + extension) ?
+    const partialRequire = partial.name.name.endsWith("." + extension) ?
       partial.name.name :
       partial.name.name + "." + extension;
-    requires = requires + `Handlebars.registerPartial("${partialName}", require(${partialName});\n`;
+    requires = requires +
+      `Handlebars.registerPartial("${partial.name.name}", require(${partialRequire});\n`;
   });
 
   depsVisitor.helpers.forEach(helper => {
     if (!knownHelpers[helper]) {
-      helper = helper.endsWith("." + extension) ?
+      const helperRequire = helper.endsWith("." + extension) ?
         helper :
         helper + "." + extension;
-      requires = requires + `Handlebars.registerHelper("${helper}", require(${helper}));\n`;
+      requires = requires + `Handlebars.registerHelper("${helper}", require(${helperRequire}));\n`;
     }
   });
 
