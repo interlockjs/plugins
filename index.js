@@ -1,14 +1,8 @@
 // TODO: Add proper sourcemap support.
 
-import * as path from "path";
-
 import * as Handlebars from "handlebars";
 
-import resolveAsset from "interlock/lib/compile/modules/resolve";
-import { readSource } from "interlock/lib/compile/modules/load-ast";
-import compileModules from "interlock/lib/compile/modules/compile";
-
-function DependenciesVisitor() {
+function DependenciesVisitor () {
   this.partials = [];
   this.helpers = [];
   Handlebars.Visitor.apply(this, arguments);
@@ -17,12 +11,12 @@ function DependenciesVisitor() {
 DependenciesVisitor.prototype = Object.create(Handlebars.Visitor.prototype);
 
 Object.assign(DependenciesVisitor.prototype, {
-  PartialStatement: function(partial) {
+  PartialStatement: function (partial) {
     this.partials.push({request: partial.name.original});
     Handlebars.Visitor.prototype.PartialStatement.call(this, partial);
   },
 
-  sexpr: function(sexpr) {
+  sexpr: function (sexpr) {
     var id = sexpr.id;
     if (id.isSimple) {
       this.helpers.push(id.original);
