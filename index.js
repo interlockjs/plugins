@@ -6,10 +6,19 @@ import * as Handlebars from "handlebars";
 
 import resolve from "interlock/lib/resolve";
 
-function DependenciesVisitor (context) {
+const BUILT_IN_HELPERS = {
+  each: true,
+  if: true,
+  log: true,
+  lookup: true,
+  with: true
+};
+
+function DependenciesVisitor (context, registerHelpers) {
   this.context = context;
   this.partials = [];
   this.helpers = [];
+  if (!registerHelpers) { this.BlockStatement = Handlebars.Visitor.prototype.BlockStatement; }
   Handlebars.Visitor.apply(this, arguments);
 }
 
@@ -17,7 +26,7 @@ DependenciesVisitor.prototype = Object.create(Handlebars.Visitor.prototype);
 
 Object.assign(DependenciesVisitor.prototype, {
   PartialStatement: function (partial) {
-    const partialAsset = this.resolve(partial.name.original);
+    const partialAsset = this.resolve(partial.name.original, true);
     const uniqueName = `${partialAsset.ns}:${partialAsset.nsPath}`;
     const relPath = path.relative(this.context.contextPath + "/", partialAsset.path);
     partial.name.original = partial.name.parts[0] = uniqueName;
@@ -26,21 +35,22 @@ Object.assign(DependenciesVisitor.prototype, {
     Handlebars.Visitor.prototype.PartialStatement.call(this, partial);
   },
 
-  sexpr: function (sexpr) {
-    var id = sexpr.id;
-    if (id.isSimple) {
-      this.helpers.push(id.original);
+  BlockStatement: function (block) {
+    if (!BUILT_IN_HELPERS[block.path.original]) {
+      const helperAsset = this.resolve(block.path.original, false);
+      const relPath = path.relative(this.context.contextPath + "/", helperAsset.path);
+      this.helpers.push({ name: block.path.original, relPath });
     }
-    Handlebars.Visitor.prototype.sexpr.call(this, sexpr);
+    Handlebars.Visitor.prototype.BlockStatement.call(this, block);
   },
 
-  resolve: function (name) {
+  resolve: function (name, isPartial) {
     const resolved = resolve(
       name,
       this.context.contextPath,
       this.context.ns,
       this.context.nsRoot,
-      this.context.extensions,
+      isPartial ? this.context.hbsExtensions : this.context.jsExtensions,
       this.context.searchPaths
     );
     if (!resolved) {
@@ -53,10 +63,10 @@ Object.assign(DependenciesVisitor.prototype, {
 });
 
 
-function getHbsRequires (ast, knownHelpers, extension, context) {
+function getHbsRequires (ast, registerHelpers, knownHelpers, extension, context) {
   var requires = "var Handlebars = require('handlebars/runtime');\n";
 
-  var depsVisitor = new DependenciesVisitor(context);
+  var depsVisitor = new DependenciesVisitor(context, registerHelpers);
   depsVisitor.accept(ast);
 
   depsVisitor.partials.forEach(partial => {
@@ -64,12 +74,15 @@ function getHbsRequires (ast, knownHelpers, extension, context) {
       `Handlebars.registerPartial("${partial.uniqueName}", require("${partial.relPath}"));\n`;
   });
 
-  depsVisitor.helpers.forEach(helper => {
+  depsVisitor.helpers.forEach((helper, idx) => {
     if (!knownHelpers[helper]) {
-      const helperRequire = helper.endsWith("." + extension) ?
-        helper :
-        helper + "." + extension;
-      requires = requires + `Handlebars.registerHelper("${helper}", require(${helperRequire}));\n`;
+      const helperVar = `helper${idx}`;
+      requires = requires + `
+        var ${helperVar} = require("${helper.relPath}");
+        if (typeof ${helperVar} === "function") {
+          Handlebars.registerHelper("${helper.name}", ${helperVar});
+        }
+      `;
     }
   });
 
@@ -79,6 +92,8 @@ function getHbsRequires (ast, knownHelpers, extension, context) {
 module.exports = function (opts={}) {
   const extension = opts.extension || "hbs";
   const searchPaths = opts.searchPaths || [];
+  const registerHelpers = opts.registerHelpers === undefined ? true : opts.registerHelpers;
+
   const isHbsFile = new RegExp(`\\.(${extension})$`);
   const knownHelpers = (opts.knownHelpers || []).reduce((obj, entry) => {
     obj[entry] = true;
@@ -92,11 +107,12 @@ module.exports = function (opts={}) {
           contextPath: path.dirname(asset.path),
           ns: asset.ns || this.opts.ns,
           nsRoot: asset.nsRoot || this.opts.nsRoot,
-          extensions: ["." + extension],
+          jsExtensions: this.opts.extensions,
+          hbsExtensions: ["." + extension],
           searchPaths: searchPaths
         };
         const ast = Handlebars.parse(source);
-        source = getHbsRequires(ast, knownHelpers, extension, context) +
+        source = getHbsRequires(ast, registerHelpers, knownHelpers, extension, context) +
           `module.exports = Handlebars.template(${Handlebars.precompile(ast)});\n`;
       }
       return source;
