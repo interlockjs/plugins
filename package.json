@@ -1,5 +1,5 @@
 {
-  "name": "interlock-json",
+  "name": "interlock-handlebars",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/interlockjs/interlock-json.git"
+    "url": "git+https://github.com/interlockjs/handlebars.git"
   },
   "author": "Dale Bustad <dale@divmain.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/interlockjs/interlock-json/issues"
+    "url": "https://github.com/interlockjs/handlebars/issues"
   },
-  "homepage": "https://github.com/interlockjs/interlock-json#readme",
+  "homepage": "https://github.com/interlockjs/handlebars#readme",
   "devDependencies": {
     "babel": "^5.8.20",
     "babel-eslint": "^4.0.5",
