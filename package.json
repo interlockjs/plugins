@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/interlockjs/interlock-json.git"
+    "url": "git+https://github.com/interlockjs/json.git"
   },
   "author": "Dale Bustad <dale@divmain.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/interlockjs/interlock-json/issues"
+    "url": "https://github.com/interlockjs/json/issues"
   },
-  "homepage": "https://github.com/interlockjs/interlock-json#readme",
+  "homepage": "https://github.com/interlockjs/json#readme",
   "devDependencies": {
     "babel-eslint": "^4.0.5",
     "eslint": "^1.0.0",
