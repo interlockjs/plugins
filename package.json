@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/interlockjs/interlock-localstorage.git"
+    "url": "git+https://github.com/interlockjs/localstorage.git"
   },
   "author": "Dale Bustad <dale@divmain.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/interlockjs/interlock-localstorage/issues"
+    "url": "https://github.com/interlockjs/localstorage/issues"
   },
-  "homepage": "https://github.com/interlockjs/interlock-localstorage#readme",
+  "homepage": "https://github.com/interlockjs/localstorage#readme",
   "devDependencies": {
     "babel-eslint": "^4.1.0",
     "eslint": "^1.3.1",
