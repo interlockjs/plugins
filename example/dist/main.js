@@ -1,3 +1,9 @@
-define(["example/shared/lib"], function (lib) {
-    lib.print("It works!!!");
+define(["example/shared/lib", "lodash"], function (lib, _) {
+  _.each([
+    "this thing consumes",
+    "code from another build",
+    "from RequireJS"
+  ], function (msg) {
+    lib.print(msg);
+  });
 });
