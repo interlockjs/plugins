@@ -1,0 +1,17 @@
+---
+parser: "babel-eslint"
+
+extends:
+  - "eslint-config-defaults/configurations/walmart/es6-node"
+
+env:
+  mocha: true
+
+globals:
+  sinon: true
+  assert: false
+  expect: true
+
+rules:
+  arrow-parens: 0
+  space-before-function-paren: [2, { "anonymous": "always", "named": "always" }]

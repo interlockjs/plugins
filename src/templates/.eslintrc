@@ -1,0 +1,12 @@
+extends:
+  - "defaults/configurations/walmart/es5-browser"
+
+rules:
+  max-params: [1, 4]
+
+globals:
+  window: false
+  define: false
+  copyProps: false
+  r: false
+  REQUIRE_JS_HASH: false

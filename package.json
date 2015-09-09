@@ -1,0 +1,33 @@
+{
+  "name": "interlock-requirejs-interop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel -d lib/ src/ && npm run copy-templates",
+    "copy-templates": "cp -R src/templates lib/",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/requirejs-interop.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/requirejs-interop/issues"
+  },
+  "homepage": "https://github.com/interlockjs/requirejs-interop#readme",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.0",
+    "eslint": "^1.3.1",
+    "eslint-config-defaults": "^4.2.0",
+    "eslint-plugin-filenames": "^0.1.2"
+  },
+  "dependencies": {
+    "interlock": "latest",
+    "lodash": "^3.10.1"
+  }
+}

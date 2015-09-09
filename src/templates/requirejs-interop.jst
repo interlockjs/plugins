@@ -1,0 +1,24 @@
+if (window.define) {
+  var alreadyConfigured = !!r.requireJsHash;
+  copyProps(r.requireJsHash = r.requireJsHash || {}, REQUIRE_JS_HASH);
+
+  if (!alreadyConfigured) {
+    define("interlock", {
+      load: function (name, req, onload) {
+        var moduleHash = r.requireJsHash[name];
+        if (name in r.requireJsHash && moduleHash in r.modules) {
+          var module = r.modules[moduleHash];
+          var cb = function () { onload(r.require(moduleHash)); };
+          if (module.blocking === null) {
+            cb();
+          } else {
+            module.cbs = (module.cbs || []).concat(cb);
+          }
+        } else {
+          onload.error(
+            new Error("The specified resource is not available: " + name));
+        }
+      }
+    });
+  }
+}
