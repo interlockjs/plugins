@@ -24,27 +24,27 @@ module.exports = function (opts = {}) {
     };
 
     transform("compileModules", function (modules) {
-      return modules.tap(module => {
-        uriToModuleHash[keyFn(module)] = module.hash;
-      });
+      modules.forEach(module => uriToModuleHash[keyFn(module)] = module.hash);
+      return modules;
     });
 
     transform("constructBundleBody", function (body, [{includeRuntime}]) {
-      return !includeRuntime ?
-        body :
-        tmpl({
-          identifier: {
-            "REQUIRE_JS_HASH": fromObject(uriToModuleHash)
-          }
-        }).then(runtimeNodes => {
-          const loadIndex = _.findIndex(body, node =>
-            node.type === "ExpressionStatement" &&
-              node.expression.type === "CallExpression" &&
-              node.expression.callee.type === "MemberExpression" &&
-              node.expression.callee.property.name === "load"
-          );
-          return [].concat(body.slice(0, loadIndex), runtimeNodes, body.slice(loadIndex));
-        });
+      if (!includeRuntime) {
+        return body;
+      }
+      const runtimeNodes = tmpl({
+        identifier: {
+          "REQUIRE_JS_HASH": fromObject(uriToModuleHash)
+        }
+      });
+
+      const loadIndex = _.findIndex(body, node =>
+        node.type === "ExpressionStatement" &&
+          node.expression.type === "CallExpression" &&
+          node.expression.callee.type === "MemberExpression" &&
+          node.expression.callee.property.name === "load"
+      );
+      return [].concat(body.slice(0, loadIndex), runtimeNodes, body.slice(loadIndex));
     });
 
   };
