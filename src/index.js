@@ -32,21 +32,23 @@ module.exports = function (opts = {}) {
 
   return function (override, transform) {
     transform("compileModules", function (modules) {
-      return modules.tap(module => {
+      modules.forEach(module => {
         if (module.uri in modulesDict) {
           cacheIds.push(module.hash);
         }
       });
+      return modules;
     });
 
     transform("getBundles", function (bundles) {
-      return bundles.tap(bundle => {
+      bundles.forEach(bundle => {
         if (bundle.module && bundlesDict[bundle.module.uri]) {
           cacheIds.push(bundle.module.hash);
           bundle.module.deepDependencies
             .forEach(dep => cacheIds.push(dep.hash));
         }
       });
+      return bundles;
     });
 
     transform("constructBundleBody", function (body, [{includeRuntime}]) {
@@ -57,6 +59,7 @@ module.exports = function (opts = {}) {
             "CACHE_IDS": fromArray(_.uniq(cacheIds))
           }
         }).then(runtimeNodes => {
+          // Insert new behavior before modules contained within the bundle are loaded.
           const loadIndex = _.findIndex(body, node =>
             node.type === "ExpressionStatement" &&
               node.expression.type === "CallExpression" &&
