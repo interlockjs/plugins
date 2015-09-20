@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "bluebird": "^2.9.34",
-    "lodash": "^3.10.1",
-    "most": "^0.15.0"
+    "lodash": "^3.10.1"
   }
 }

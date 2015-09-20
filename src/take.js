@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 
 import _ from "lodash";
-import most from "most";
 import Promise from "bluebird";
 
 
@@ -88,7 +87,7 @@ module.exports = function (manifestPath, bundlesPath) {
 
     transform("emitRawBundles", function (bundles) {
       // Generate list of shared bundle filenames to include in this build.
-      const bundlesToEmit = _.chain(moduleHashHits)
+      const sharedBundlePaths = _.chain(moduleHashHits)
         .map((wasHit, moduleHash) => wasHit && moduleHash)
         .filter(x => x)
         .map(moduleHash => manifest.moduleHashToBundleFn[moduleHash])
@@ -96,10 +95,8 @@ module.exports = function (manifestPath, bundlesPath) {
         .value();
 
       // Emit the utilized shared-bundles along with the rest of the compilation.
-      const extraBundles = most.from(bundlesToEmit)
-        .map(fpath => rawBundleFromFile(bundlesPath, fpath))
-        .await();
-      return bundles.concat(extraBundles);
+      return Promise.all(sharedBundlePaths.map(fpath => rawBundleFromFile(bundlesPath, fpath)))
+        .then(sharedBundles => bundles.concat(sharedBundles));
     });
   };
 };
