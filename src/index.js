@@ -51,23 +51,14 @@ module.exports = function (opts = {}) {
       return bundles;
     });
 
-    transform("constructBundleBody", function (body, [{includeRuntime}]) {
-      return !includeRuntime ?
-        body :
-        tmpl({
-          identifier: {
-            "CACHE_IDS": fromArray(_.uniq(cacheIds))
-          }
-        }).then(runtimeNodes => {
-          // Insert new behavior before modules contained within the bundle are loaded.
-          const loadIndex = _.findIndex(body, node =>
-            node.type === "ExpressionStatement" &&
-              node.expression.type === "CallExpression" &&
-              node.expression.callee.type === "MemberExpression" &&
-              node.expression.callee.property.name === "load"
-          );
-          return [].concat(body.slice(0, loadIndex), runtimeNodes, body.slice(loadIndex));
-        });
+    transform("constructRuntime", function (runtimeNodes) {
+      return tmpl({
+        identifier: {
+          "CACHE_IDS": fromArray(_.uniq(cacheIds))
+        }
+      }).then(localstorageRuntimeNodes => {
+        return [].concat(runtimeNodes, localstorageRuntimeNodes);
+      });
     });
   };
 };
