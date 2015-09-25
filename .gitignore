@@ -1,7 +1,42 @@
+# --------------------
+# OSX Files
+# --------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
 
-# added by GitSavvy
-/node_modules/
+# --------------------
+# Sublime Text Files
+# --------------------
+*.sublime-project
+*.sublime-workspace
 
-# added by GitSavvy
-example/dist/*.js
-example/dist/*.map
+# --------------------
+# IntelliJ Files
+# --------------------
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+
+# --------------------
+# Eclipse Files
+# --------------------
+.project
+.metadata
+*.bak
+.classpath
+.settings/
+
+# --------------------
+# App Files
+# --------------------
+npm-debug.log
+node_modules/
+dist/
+lib/

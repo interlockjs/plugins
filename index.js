@@ -1,14 +1,15 @@
-module.exports = function (opts={}) {
-  var isJsonFile = opts.filter || /\.json$/;
+var useTranspiled = true; // eslint-disable-line no-var
 
-  return function (override, transform, control) {
-    // https://github.com/interlockjs/interlock/blob/master/docs/extensibility.md#readsource
-    transform("readSource", function (source, args) {
-      const asset = args[0];
-      if (isJsonFile.test(asset.path)) {
-        source = `module.exports = ${source};`;
-      }
-      return source;
-    });
-  };
-};
+try {
+  require.resolve("./lib");
+} catch (e) {
+  useTranspiled = false;
+}
+
+if (useTranspiled) {
+  // require("babel/polyfill");
+  module.exports = require("./lib");
+} else {
+  require("babel/register");
+  module.exports = require("./src");
+}
