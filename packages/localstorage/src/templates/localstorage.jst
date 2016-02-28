@@ -1,0 +1,40 @@
+var ls = window.localStorage;
+
+if (ls) {
+  var __origLoad = r.load.bind(r);
+
+  r.cacheIds = (r.cacheIds || []).concat(CACHE_IDS).reduce(function (hash, id) {
+    hash[id] = true;
+  }, {});
+
+  r.providers.push(function (moduleHash, next) {
+    var cached = ls["__interlock_cache:" + moduleHash];
+    if (!cached) { next(); return; }
+    try {
+      var parsed = JSON.parse(cached);
+    } catch (e) {
+      next();
+      return;
+    }
+
+    setTimeout(function () {
+      __origLoad.load({
+        deps: parsed.deps,
+        fn: new Function("require", "module", "exports", parsed.fnBody)
+      });
+    }, 0);
+  });
+
+  r.load = function (moduleSet) {
+    Object.keys(moduleSet).forEach(function (moduleHash) {
+      if (!r.cacheIds[moduleHash]) { return; }
+      var loadedModule = moduleSet[moduleHash];
+      var fnBody = loadedModule.fn.toString();
+      ls["__interlock_cache:" + moduleHash] = JSON.stringify({
+        deps: loadedModule.deps,
+        fnBody: fnBody.slice(fnBody.indexOf("{") + 1, fnBody.length - 1)
+      });
+    });
+    __origLoad(moduleSet);
+  };
+}
