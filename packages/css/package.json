@@ -1,0 +1,32 @@
+{
+  "name": "interlock-css",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel -d lib/ src/",
+    "lint": "eslint .",
+    "prepublish": "npm run build",
+    "preversion": "npm run lint && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/css.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/css/issues"
+  },
+  "homepage": "https://github.com/interlockjs/css#readme",
+  "devDependencies": {
+    "babel": "^5.8.29",
+    "babel-eslint": "^4.1.0",
+    "eslint": "^1.3.1",
+    "eslint-config-defaults": "^4.2.0",
+    "eslint-plugin-filenames": "^0.1.2"
+  },
+  "dependencies": {
+    "postcss": "^5.0.8"
+  }
+}
