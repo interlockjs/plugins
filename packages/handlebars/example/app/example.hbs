@@ -1,0 +1,9 @@
+Hello {{name}}!
+{{> example-partial }}
+
+{{#if lastname}}
+  The last name is {{lastname}}!
+{{/if}}
+{{#example-helper lastname}}
+  The last name is {{lastname}}!
+{{/example-helper}}
