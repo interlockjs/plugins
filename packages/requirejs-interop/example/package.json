@@ -1,0 +1,15 @@
+{
+  "name": "interlock-requirejs-interop-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "dependencies": {
+    "interlock": "latest",
+    "lodash": "^3.10.1"
+  }
+}
