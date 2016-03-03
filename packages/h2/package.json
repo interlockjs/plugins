@@ -3,12 +3,6 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "build": "babel -d lib/ src/",
-    "lint": "eslint .",
-    "prepublish": "npm run build",
-    "preversion": "npm run lint && npm run build"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/interlockjs/h2.git"

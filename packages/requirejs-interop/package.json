@@ -1,14 +1,8 @@
 {
   "name": "interlock-requirejs-interop",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel -d lib/ src/ && npm run copy-templates",
-    "copy-templates": "cp -R src/templates lib/",
-    "lint": "eslint ."
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/interlockjs/requirejs-interop.git"
