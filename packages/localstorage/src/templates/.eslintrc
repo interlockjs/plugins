@@ -1,5 +1,5 @@
 extends:
-  - "defaults/configurations/walmart/es5-browser"
+  - "@divmain/eslint-config-defaults/configurations/walmart/es5-browser"
 
 rules:
   no-unused-expressions: 0

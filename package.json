@@ -33,7 +33,7 @@
     "babel-preset-nodejs-lts": "^1.2.1",
     "chai": "^3.5.0",
     "eslint": "^2.2.0",
-    "eslint-config-defaults": "^9.0.0",
+    "@divmain/eslint-config-defaults": "10.0.0-0",
     "eslint-plugin-filenames": "^0.2.0",
     "glob": "^7.0.0",
     "lerna": "^1.1.1",

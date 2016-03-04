@@ -2,7 +2,7 @@
 parser: "babel-eslint"
 
 extends:
-  - "defaults/configurations/walmart/es6-node"
+  - "@divmain/eslint-config-defaults/configurations/walmart/es6-node"
 
 env:
   mocha: true
