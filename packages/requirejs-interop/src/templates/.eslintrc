@@ -3,6 +3,7 @@ extends:
 
 rules:
   max-params: [1, 4]
+  no-unused-vars: 0
 
 globals:
   window: false

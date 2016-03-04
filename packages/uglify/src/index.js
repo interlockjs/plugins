@@ -14,11 +14,11 @@ function uglify (ast, options, mangle) {
   return uAST.to_mozilla_ast();
 }
 
-module.exports = function (uglifyOpts, mangle) {
+export default function (uglifyOpts, mangle) {
   uglifyOpts = uglifyOpts || {};
   return function (override, transform) {
-    transform("constructBundle", function (bundleAst) {
+    transform("constructBundle", bundleAst => {
       return uglify(bundleAst, uglifyOpts, mangle);
     });
   };
-};
+}

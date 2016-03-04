@@ -30,7 +30,7 @@ function rawBundleFromFile (dir, filename) {
     });
 }
 
-module.exports = function (manifestPath, bundlesPath) {
+export default function (manifestPath, bundlesPath) {
   return function (override, transform) {
     // Throw an error at the _beginning of compilation_ if the specified manifest
     // file does not exist.  This check occurs here (instead of when the plugins
@@ -40,7 +40,7 @@ module.exports = function (manifestPath, bundlesPath) {
       throw new Error("You must supply a path to a valid manifest.");
     }
 
-    const manifest = require(manifestPath);
+    const manifest = require(manifestPath); // eslint-disable-line global-require
     bundlesPath = bundlesPath || path.dirname(manifestPath);
 
     // Keep track of which module hashes are both 1) in the current build, and 2) in
@@ -53,7 +53,7 @@ module.exports = function (manifestPath, bundlesPath) {
       .object()
       .value();
 
-    transform("dedupeImplicit", function (bundles) {
+    transform("dedupeImplicit", bundles => {
       return bundles
         // Remove and record any modules that are present in the shared build.
         .map(bundle => {
@@ -74,7 +74,7 @@ module.exports = function (manifestPath, bundlesPath) {
         .filter(bundle => !!bundle.moduleHashes.length);
     });
 
-    transform("getUrls", function (urlsHash) {
+    transform("getUrls", urlsHash => {
       // Generate URL-hash entries for all modules that were removed from the
       // build but should point to the shared build.
       const sharedUrlEntries = _.chain(moduleHashHits)
@@ -85,7 +85,7 @@ module.exports = function (manifestPath, bundlesPath) {
       return Object.assign({}, urlsHash, sharedUrlEntries);
     });
 
-    transform("emitRawBundles", function (bundles) {
+    transform("emitRawBundles", bundles => {
       // Generate list of shared bundle filenames to include in this build.
       const sharedBundlePaths = _.chain(moduleHashHits)
         .map((wasHit, moduleHash) => wasHit && moduleHash)
@@ -99,4 +99,4 @@ module.exports = function (manifestPath, bundlesPath) {
         .then(sharedBundles => bundles.concat(sharedBundles));
     });
   };
-};
+}

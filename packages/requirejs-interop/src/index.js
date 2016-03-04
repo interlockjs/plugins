@@ -23,12 +23,12 @@ module.exports = function (opts = {}) {
       return `${module.ns}/${nsPath}`;
     };
 
-    transform("compileModules", function (modules) {
+    transform("compileModules", modules => {
       modules.forEach(module => uriToModuleHash[keyFn(module)] = module.hash);
       return modules;
     });
 
-    transform("constructBundleBody", function (body, [{includeRuntime}]) {
+    transform("constructBundleBody", (body, [{ includeRuntime }]) => {
       if (!includeRuntime) {
         return body;
       }

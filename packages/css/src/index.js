@@ -4,20 +4,20 @@ export default function (opts = {}) {
   const isCssFile = opts.filter || /\.css$/;
   const processor = postcss(opts.plugins || []);
 
-  return (override, transform, shared) => {
+  return (override, transform) => {
     const cssModuleHashes = {};
 
     /**
      * Assign input files that match the filter a module type of `css`. This
      * will trigger the alternate pipeline defined in this plugin.
      */
-    transform("setModuleType", function (module) {
+    transform("setModuleType", module => {
       return isCssFile.test(module.path) ?
         Object.assign({}, module, { type: "css" }) :
         module;
-    })
+    });
 
-    override("parseModule", function (module) {
+    override("parseModule", module => {
       if (module.type !== "css") {
         return override.CONTINUE;
       }
@@ -26,14 +26,14 @@ export default function (opts = {}) {
       });
     });
 
-    override("transformModule", function (module) {
+    override("transformModule", module => {
       if (module.type !== "css") {
         return override.CONTINUE;
       }
       return processor.process(module.ast).then(result => {
         return Object.assign({}, module, {
           ast: result.root,
-          synchronousRequires: []  
+          synchronousRequires: []
         });
       });
     });
@@ -41,7 +41,7 @@ export default function (opts = {}) {
     // TODO: Verify `generateDependencies` works unmodified.
     // TODO: Verify `hashModule` works unmodified.
 
-    override("updateRequires", function (module) {
+    override("updateRequires", module => {
       if (module.type !== "css") {
         return override.CONTINUE;
       }
@@ -54,16 +54,16 @@ export default function (opts = {}) {
      * CSS modules will require special treatment during the bundling process.
      * Record the hashes of the modules here, now that compilation has completed.
      */
-    transform("compileModules", function (modules) {
+    transform("compileModules", modules => {
       modules.forEach(module => {
         if (module.type === "css") {
           cssModuleHashes[module.hash] = true;
         }
-      })
+      });
       return modules;
-    })
+    });
 
-    override("initBundle", function (bundleDef, module, isEntryPt) {
+    override("initBundle", (bundleDef, module/*, isEntryPt*/) => {
       if (module.type !== "css") {
         return override.CONTINUE;
       }
@@ -82,7 +82,7 @@ export default function (opts = {}) {
     //    - module that creates a new <style> tag referencing the CSS output bundle
     //    - module that creates a new <style> tag with CSS text content
 
-    transform("populateBundleModules", function (bundle) {
+    transform("populateBundleModules", bundle => {
       if (bundle.type === "css") {
         return bundle;
       }
@@ -92,7 +92,7 @@ export default function (opts = {}) {
       });
     });
 
-    override("constructBundle", function (bundle, urls) {
+    override("constructBundle", (bundle/*, urls*/) => {
       if (bundle.type !== "css") {
         return override.CONTINUE;
       }
@@ -101,14 +101,13 @@ export default function (opts = {}) {
       });
     });
 
-    override("generateRawBundles", function (bundle) {
+    override("generateRawBundles", bundle => {
       if (bundle.type !== "css") {
         return override.CONTINUE;
       }
-      console.log("cool thing!!! ", bundle.moduleRootNodes);
       return Object.assign({}, bundle, {
         raw: bundle.moduleRootNodes.map(node => node.toString()).join("\n")
       });
-    })
+    });
   };
 }

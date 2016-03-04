@@ -1,4 +1,2 @@
-export default {
-  give: require("./give"),
-  take: require("./take")
-};
+export { default as give } from "./give";
+export { default as take } from "./take";

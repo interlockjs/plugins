@@ -31,7 +31,7 @@ module.exports = function (opts = {}) {
   const cacheIds = [];
 
   return function (override, transform) {
-    transform("compileModules", function (modules) {
+    transform("compileModules", modules => {
       modules.forEach(module => {
         if (module.uri in modulesDict) {
           cacheIds.push(module.hash);
@@ -40,7 +40,7 @@ module.exports = function (opts = {}) {
       return modules;
     });
 
-    transform("getBundles", function (bundles) {
+    transform("getBundles", bundles => {
       bundles.forEach(bundle => {
         if (bundle.module && bundlesDict[bundle.module.uri]) {
           cacheIds.push(bundle.module.hash);
@@ -51,7 +51,7 @@ module.exports = function (opts = {}) {
       return bundles;
     });
 
-    transform("constructRuntime", function (runtimeNodes) {
+    transform("constructRuntime", runtimeNodes => {
       return tmpl({
         identifier: {
           "CACHE_IDS": fromArray(_.uniq(cacheIds))

@@ -1,13 +1,13 @@
-module.exports = function (manifestFilename) {
+export default function (manifestFilename) {
   return function (override, transform) {
     const uriToModuleHash = {};
 
-    transform("compileModules", function (modules) {
+    transform("compileModules", modules => {
       modules.forEach(module => uriToModuleHash[module.uri] = module.hash);
       return modules;
     });
 
-    transform("emitRawBundles", function (bundles, [, urls]) {
+    transform("emitRawBundles", (bundles, [, urls]) => {
       const manifest = { moduleHashToBundleFn: urls, uriToModuleHash };
       const manifestBundle = {
         dest: manifestFilename,
@@ -16,4 +16,4 @@ module.exports = function (manifestFilename) {
       return bundles.concat(manifestBundle);
     });
   };
-};
+}

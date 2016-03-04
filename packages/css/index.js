@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 var useTranspiled = true; // eslint-disable-line no-var
 
 try {

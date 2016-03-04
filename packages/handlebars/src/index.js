@@ -28,8 +28,8 @@ Object.assign(DependenciesVisitor.prototype, {
   PartialStatement (partial) {
     const partialAsset = this.resolve(partial.name.original, true);
     const uniqueName = `${partialAsset.ns}:${partialAsset.nsPath}`;
-    const relPath = path.relative(this.context.contextPath + "/", partialAsset.path);
-    partial.name.original = partial.name.parts[0] = uniqueName;
+    const relPath = path.relative(`${this.context.contextPath}/`, partialAsset.path);
+    partial.name.original = partial.name.parts[0] = uniqueName; // eslint-disable-line no-magic-numbers,max-len
     this.partials.push({ uniqueName, relPath });
 
     Handlebars.Visitor.prototype.PartialStatement.call(this, partial);
@@ -38,7 +38,7 @@ Object.assign(DependenciesVisitor.prototype, {
   BlockStatement (block) {
     if (!BUILT_IN_HELPERS[block.path.original]) {
       const helperAsset = this.resolve(block.path.original, false);
-      const relPath = path.relative(this.context.contextPath + "/", helperAsset.path);
+      const relPath = path.relative(`${this.context.contextPath}/`, helperAsset.path);
       this.helpers.push({ name: block.path.original, relPath });
     }
     Handlebars.Visitor.prototype.BlockStatement.call(this, block);
@@ -109,12 +109,13 @@ module.exports = function (opts = {}) {
           ns: module.ns || this.opts.ns,
           nsRoot: module.nsRoot || this.opts.nsRoot,
           jsExtensions: this.opts.extensions,
-          hbsExtensions: ["." + extension],
+          hbsExtensions: [`.${extension}`],
           searchPaths
         };
         const ast = Handlebars.parse(rawSource);
-        rawSource = getHbsRequires(ast, registerHelpers, knownHelpers, extension, context) +
-          `module.exports = Handlebars.template(${Handlebars.precompile(ast)});\n`;
+        const hbsRequires = getHbsRequires(ast, registerHelpers, knownHelpers, extension, context);
+        const precompiledTmpl = Handlebars.precompile(ast);
+        rawSource = `${hbsRequires}\nmodule.exports = Handlebars.template(${precompiledTmpl});\n`;
       }
       return Object.assign({}, module, { rawSource });
     });

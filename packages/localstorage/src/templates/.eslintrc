@@ -1,7 +1,12 @@
 extends:
   - "@divmain/eslint-config-defaults/configurations/walmart/es5-browser"
 
+globals:
+  r: true
+  CACHE_IDS: true
+
 rules:
+  no-magic-numbers: 0
   no-unused-expressions: 0
   no-extra-parens: 0
   no-unused-vars: 0
