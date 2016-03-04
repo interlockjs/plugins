@@ -6,7 +6,8 @@ import _ from "lodash";
 import { fromObject } from "interlock/lib/util/ast";
 import { bodyTmpl } from "interlock/lib/ast/template";
 
-const tmplStr = fs.readFileSync(path.join(__dirname, "templates/requirejs-interop.jst"), "utf-8");
+const tmplStr =
+  fs.readFileSync(path.join(__dirname, "../templates/requirejs-interop.jst"), "utf-8");
 const tmpl = bodyTmpl(tmplStr);
 
 module.exports = function (opts = {}) {
