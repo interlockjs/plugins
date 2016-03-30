@@ -1,12 +1,12 @@
-var path = require("path");
+const path = require("path");
 
-var css = require("..");
-var Interlock = require("interlock");
-var autoprefixer = require("autoprefixer");
+const css = require("..");
+const Interlock = require("interlock");
+const autoprefixer = require("autoprefixer");
 
 Error.stackTraceLimit = Infinity;
 
-var ilk = new Interlock({
+const ilk = new Interlock({
   srcRoot: __dirname,
   destRoot: path.join(__dirname, "dist"),
 
@@ -15,8 +15,7 @@ var ilk = new Interlock({
     "./app/example-b.css": "example-b.build.css"
   },
 
-  includeComments: true,
-  sourceMaps: true,
+  pretty: true,
 
   plugins: [
     css({

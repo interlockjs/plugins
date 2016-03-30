@@ -4,8 +4,7 @@
   "description": "",
   "main": "build.js",
   "dependencies": {
-    "autoprefixer": "^6.0.3",
-    "interlock": "^0.4.2"
+    "autoprefixer": "^6.0.3"
   },
   "devDependencies": {},
   "scripts": {
