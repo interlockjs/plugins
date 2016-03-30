@@ -1,4 +1,6 @@
 import postcss from "postcss";
+import { assign } from "lodash";
+
 
 export default function (opts = {}) {
   const isCssFile = opts.filter || /\.css$/;
@@ -13,7 +15,7 @@ export default function (opts = {}) {
      */
     transform("setModuleType", module => {
       return isCssFile.test(module.path) ?
-        Object.assign({}, module, { type: "css" }) :
+        assign({}, module, { type: "css" }) :
         module;
     });
 
@@ -21,7 +23,7 @@ export default function (opts = {}) {
       if (module.type !== "css") {
         return override.CONTINUE;
       }
-      return Object.assign({}, module, {
+      return assign({}, module, {
         ast: postcss.parse(module.rawSource)
       });
     });
@@ -31,7 +33,7 @@ export default function (opts = {}) {
         return override.CONTINUE;
       }
       return processor.process(module.ast).then(result => {
-        return Object.assign({}, module, {
+        return assign({}, module, {
           ast: result.root,
           synchronousRequires: []
         });
@@ -86,7 +88,7 @@ export default function (opts = {}) {
         return bundle;
       }
 
-      return Object.assign({}, bundle, {
+      return assign({}, bundle, {
         modules: bundle.modules.filter(module => !cssModuleHashes[module.hash])
       });
     });
@@ -95,7 +97,7 @@ export default function (opts = {}) {
       if (bundle.type !== "css") {
         return override.CONTINUE;
       }
-      return Object.assign({}, bundle, {
+      return assign({}, bundle, {
         moduleRootNodes: bundle.modules.map(module => module.ast)
       });
     });
@@ -104,7 +106,7 @@ export default function (opts = {}) {
       if (bundle.type !== "css") {
         return override.CONTINUE;
       }
-      return Object.assign({}, bundle, {
+      return assign({}, bundle, {
         raw: bundle.moduleRootNodes.map(node => node.toString()).join("\n")
       });
     });
