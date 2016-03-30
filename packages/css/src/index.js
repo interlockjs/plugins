@@ -40,9 +40,6 @@ export default function (opts = {}) {
       });
     });
 
-    // TODO: Verify `generateDependencies` works unmodified.
-    // TODO: Verify `hashModule` works unmodified.
-
     override("updateRequires", module => {
       if (module.type !== "css") {
         return override.CONTINUE;
