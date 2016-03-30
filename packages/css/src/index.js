@@ -63,15 +63,14 @@ export default function (opts = {}) {
       return modules;
     });
 
-    override("initBundle", (bundleDef, module/*, isEntryPt*/) => {
-      if (module.type !== "css") {
+    override("initBundle", bundleOpts => {
+      if (bundleOpts.module.type !== "css") {
         return override.CONTINUE;
       }
-      return {
-        module,
-        type: "css",
-        dest: bundleDef.dest
-      };
+
+      return Object.assign({}, bundleOpts, {
+        type: "css"
+      });
     });
 
     // TODO "dedupeImplicit":
