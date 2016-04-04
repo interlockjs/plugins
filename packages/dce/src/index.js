@@ -106,7 +106,7 @@ export default function (/* opts = {} */) {
                 //   --> function foo () { /* ... */ };
                 // export default "default";
                 //   --> "default";
-                // 
+                //
                 path.replaceWith(path.node.right);
               }
             }

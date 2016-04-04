@@ -13,7 +13,7 @@ const VALID_MODES = [
 
 const checkMode = mode => {
   if (!includes(VALID_MODES, mode)) {
-    throw new Error(`interlock-css: '${mode}' is not a valid mode.  Must be one of: ${VALID_MODES.join(", ")}.`);
+    throw new Error(`interlock-css: '${mode}' is not a valid mode.  Must be one of: ${VALID_MODES.join(", ")}.`); // eslint-disable-line max-len
   }
 };
 
@@ -25,7 +25,7 @@ export default function (opts = {}) {
   // TODO: Add the postcss-modules plugin if opts.cssModules is True.  Should
   //       provide a `getJSON` option to the plugin, to capture mapping of
   //       old and new CSS classnames, to pass onto bundle transformers.
-  // 
+  //
   //       See: https://github.com/outpunk/postcss-modules.
   //
   const processor = postcss(opts.plugins || []);

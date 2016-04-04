@@ -134,7 +134,7 @@ export default function (opts = {}) {
       });
     });
 
-    override("populateBundleModules", (bundle, moduleMaps) => {
+    override("populateBundleModules", (bundle/*, moduleMaps*/) => {
       if (bundle.type !== "html") {
         return override.CONTINUE;
       }
