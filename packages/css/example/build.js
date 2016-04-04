@@ -19,6 +19,7 @@ const ilk = new Interlock({
 
   plugins: [
     css({
+      mode: "bundle",
       plugins: [ autoprefixer ]
     })
   ]

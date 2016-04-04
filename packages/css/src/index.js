@@ -1,13 +1,14 @@
-import path from "path";
-import fs from "fs";
-
 import postcss from "postcss";
 import { assign, includes, values } from "lodash";
-import * as t from "babel-types";
-import template from "interlock/lib/util/template";
+
+import generateStyleLoaders from "./gen-style-loaders";
+import generateCssBundles from "./gen-css-bundles";
 
 
-const VALID_MODES = ["file", "tag", "bundle"];
+const VALID_MODES = [
+  "bundle",
+  "insert"
+];
 
 
 const checkMode = mode => {
@@ -16,59 +17,17 @@ const checkMode = mode => {
   }
 };
 
-function getTemplate (templateName, transform) {
-  transform = transform || (node => node);
-  const absPath = path.join(__dirname, `../templates/${templateName}.jst`);
-  const templateStr = fs.readFileSync(absPath, "utf-8")
-    // Remove ESlint rule exclusions from parsed templates.
-    .replace(/\s*\/\/\s*eslint-disable-line.*/g, "");
-  const _template = template(templateStr);
-  return opts => transform(_template(opts));
-}
-
-const styleLoaderTmpl = getTemplate("style-loader", body => t.program(body));
-
-
-function generateCssBundles (bundles) {
-  // TODO: For each bundle, determine a corresponding (new) CSS bundle name.
-  //       Then, replace all CSS modules with JavaScript module that exports
-  //       the entry point of this new CSS bundle.  When the CSS module is
-  //       required, it will return the path to the new CSS bundle output file
-  //       path.
-}
-
-function generateStyleLoaders (bundles, compiledModules) {
-  // TODO: The modules belonging to CSS bundles (specified in `entry`) should
-  //       not be transformed here.  Too much extra work.  Instead, create a
-  //       memoized function here that will return a JavaScript module that
-  //       was created from the original CSS module.
-  const jsifiedModules = compiledModules.reduce((jsified, module) => {
-    if (module.type === "css") {
-      jsified[module.hash] = assign({}, module, {
-        type: "javascript",
-        ast: styleLoaderTmpl({
-          STYLE_ID: t.stringLiteral(module.hash),
-          RULES: t.stringLiteral(escape(module.ast.toString()))
-        })
-      });
-    }
-    return jsified;
-  }, {});
-
-  return bundles.map(bundle => {
-    return bundle.type === "javascript" ?
-      assign({}, bundle, {
-        modules: bundle.modules.map(module => {
-          return jsifiedModules[module.hash] || module;
-        })
-      }) :
-      bundle;
-  });
-}
 
 export default function (opts = {}) {
-  const mode = opts.mode || "tag"; // file, tag, bundle
+  const mode = opts.mode || "insert";
   const isCssFile = opts.filter || /\.css$/;
+
+  // TODO: Add the postcss-modules plugin if opts.cssModules is True.  Should
+  //       provide a `getJSON` option to the plugin, to capture mapping of
+  //       old and new CSS classnames, to pass onto bundle transformers.
+  // 
+  //       See: https://github.com/outpunk/postcss-modules.
+  //
   const processor = postcss(opts.plugins || []);
 
   checkMode(mode);
@@ -138,12 +97,7 @@ export default function (opts = {}) {
       });
     });
 
-    transform("generateBundles", (bundles, [, moduleMaps]) => {
-      // Return a string containing CSS rules.
-      if (mode === "string") {
-        // TODO
-      }
-
+    transform("generateBundles", function (bundles, [, moduleMaps]) {
       // Return a JavaScript object with selectors as keys and rulesets as
       // values.  These rulesets will be expressed as objects with rule names
       // as keys and rule values as values.
@@ -151,9 +105,10 @@ export default function (opts = {}) {
         // TODO
       }
 
-      // Output a .css file for per-bundle CSS modules, and return null;
+      // Output a .css file for per-bundle CSS modules.  If in CSS module
+      // mode, instead return a mapping of original and mapped class names.
       if (mode === "bundle") {
-        return generateCssBundles(bundles);
+        return generateCssBundles.call(this, bundles);
       }
 
       // Transforms CSS modules into separate distinct CSS output bundles, and
@@ -165,6 +120,8 @@ export default function (opts = {}) {
 
       // Transform CSS into JS that inserts the rules, and return the DOM element.
       if (mode === "insert") {
+        // TODO: If in CSS module mode, pass map of written class names to
+        //       unique/generated class names.
         return generateStyleLoaders(bundles, values(moduleMaps.byHash));
       }
 
