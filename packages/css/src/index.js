@@ -1,5 +1,5 @@
 import postcss from "postcss";
-import { assign, includes, values } from "lodash";
+import { assign, includes, values, chain } from "lodash";
 
 import generateStyleLoaders from "./gen-style-loaders";
 import generateCssBundles from "./gen-css-bundles";
@@ -127,6 +127,19 @@ export default function (opts = {}) {
 
       return bundles;
     });
+
+    /**
+     * CSS modules that are to be emitted as part of a CSS bundle should not
+     * be included in the URL hash used for loading JS modules.
+     */
+    transform("getUrls", urls => {
+      return chain(urls)
+        .map((url, moduleId) => [moduleId, url])
+        .filter(([, url]) => !isCssFile.test(url))
+        .fromPairs()
+        .value();
+    });
+
 
     /**
      * No extra work needs to occur here.
