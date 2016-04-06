@@ -4,11 +4,13 @@ import { assign, includes, values, chain } from "lodash";
 
 import generateStyleLoaders from "./gen-style-loaders";
 import generateCssBundles from "./gen-css-bundles";
+import generateRuleSetObj from "./gen-ruleset-obj";
 
 
 const VALID_MODES = [
   "bundle",
-  "insert"
+  "insert",
+  "object"
 ];
 
 
@@ -110,7 +112,7 @@ export default function (opts = {}) {
       // values.  These rulesets will be expressed as objects with rule names
       // as keys and rule values as values.
       if (mode === "object") {
-        // TODO
+        return generateRuleSetObj(bundles);
       }
 
       // Output a .css file for per-bundle CSS modules.  If in CSS module
