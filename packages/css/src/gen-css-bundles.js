@@ -23,6 +23,19 @@ const exportObjTmpl = getTemplate("export-object", node => t.program([node]));
  * @return {Array}                           Original bundles plus CSS bundles.
  */
 function replaceCssModules (bundles, cssBundles, originBundleCssBundleMap, moduleClassnameMaps) {
+
+  const cssBundlesStats = cssBundles.map(bundle => {
+    const moduleClassnames = bundle.modules.map(module => moduleClassnameMaps[module.path]);
+    const combinedJson = assign(...[{}].concat(moduleClassnames));
+
+    return {
+      type: "css-stats",
+      dest: `${bundle.dest}.json`,
+      moduleHashes: [],
+      raw: JSON.stringify(combinedJson)
+    };
+  });
+
   return bundles.map((bundle, bIdx) => {
     if (!(bIdx in originBundleCssBundleMap)) { return bundle; }
     const cssBundle = cssBundles[originBundleCssBundleMap[bIdx]];
@@ -43,7 +56,7 @@ function replaceCssModules (bundles, cssBundles, originBundleCssBundleMap, modul
         ast: exportObjTmpl({ EXPORT_VALUE: exportValue })
       });
     })});
-  }).concat(cssBundles);
+  }).concat(cssBundles, cssBundlesStats);
 }
 
 export default function generateCssBundles (bundles, moduleClassnameMaps) {

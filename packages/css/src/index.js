@@ -153,7 +153,9 @@ export default function (opts = {}) {
      * No extra work needs to occur here.
      */
     override("constructBundle", bundle => {
-      if (bundle.type !== "css") {
+      // `css-stats` bundles may be emitted when CSS modules output is enabled
+      // and in `bundle` mode.
+      if (bundle.type !== "css" || bundle.type !== "css-stats") {
         return override.CONTINUE;
       }
       return bundle;
@@ -164,7 +166,11 @@ export default function (opts = {}) {
      * CSS modules to their string form and concatenate.
      */
     override("generateRawBundles", bundle => {
-      if (bundle.type !== "css") {
+      // `css-stats` bundles may be emitted when CSS modules output is enabled
+      // and in `bundle` mode.
+      if (bundle.type === "css-stats") {
+        return bundle;
+      } else if (bundle.type !== "css") {
         return override.CONTINUE;
       }
       return assign({}, bundle, {
