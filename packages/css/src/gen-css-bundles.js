@@ -52,11 +52,8 @@ export default function generateCssBundles (bundles, moduleClassnameMaps) {
 
   bundles.forEach((bundle, bIdx) => {
     if (bundle.type !== "javascript") { return; }
-    const cssModules = [];
 
-    bundle.modules.forEach(module => {
-      if (module.type === "css") { cssModules.push(module); }
-    });
+    const cssModules = bundle.modules.filter(module => module.type === "css");
 
     if (cssModules.length) {
       originBundleCssBundleMap[bIdx] = cssBundleSeeds.length;
