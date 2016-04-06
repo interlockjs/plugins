@@ -128,9 +128,9 @@ export default function (opts = {}) {
 
       // Transform CSS into JS that inserts the rules, and return the DOM element.
       if (mode === "insert") {
-        // TODO: If in CSS module mode, pass map of written class names to
+        // TODO: If in CSS module mode, export map of written class names to
         //       unique/generated class names.
-        return generateStyleLoaders(bundles, values(moduleMaps.byHash));
+        return generateStyleLoaders(bundles, values(moduleMaps.byHash), moduleClassnameMaps);
       }
 
       return bundles;

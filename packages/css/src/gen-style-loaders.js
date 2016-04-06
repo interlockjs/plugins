@@ -1,13 +1,15 @@
 import { assign } from "lodash";
 import * as t from "babel-types";
 
+import { fromObject } from "interlock/lib/util/ast";
+
 import getTemplate from "./get-template";
 
 
 const styleLoaderTmpl = getTemplate("style-loader", body => t.program(body));
 
 
-export default function generateStyleLoaders (bundles, compiledModules) {
+export default function generateStyleLoaders (bundles, compiledModules, moduleClassnameMaps) {
   // TODO: The modules belonging to CSS bundles (specified in `entry`) should
   //       not be transformed here.  Too much extra work.  Instead, create a
   //       memoized function here that will return a JavaScript module that
@@ -18,10 +20,10 @@ export default function generateStyleLoaders (bundles, compiledModules) {
         type: "javascript",
         ast: styleLoaderTmpl({
           STYLE_ID: t.stringLiteral(module.hash),
-          RULES: t.stringLiteral(escape(module.ast.toString()))
-          // TODO: If in CSS-module mode, make sure that the style-loader
-          //       template will export an object that maps written
-          //       class names to unique/generated class names.
+          RULES: t.stringLiteral(escape(module.ast.toString())),
+          EXPORT_VALUE: moduleClassnameMaps && moduleClassnameMaps[module.path] ?
+            fromObject(moduleClassnameMaps[module.path]) :
+            t.identifier("stylesheet")
         })
       });
     }
