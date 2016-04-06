@@ -1,4 +1,5 @@
 import postcss from "postcss";
+import postcssModules from "postcss-modules";
 import { assign, includes, values, chain } from "lodash";
 
 import generateStyleLoaders from "./gen-style-loaders";
@@ -20,15 +21,20 @@ const checkMode = mode => {
 
 export default function (opts = {}) {
   const mode = opts.mode || "insert";
+  const modules = !!opts.modules;
   const isCssFile = opts.filter || /\.css$/;
 
-  // TODO: Add the postcss-modules plugin if opts.cssModules is True.  Should
-  //       provide a `getJSON` option to the plugin, to capture mapping of
-  //       old and new CSS classnames, to pass onto bundle transformers.
-  //
-  //       See: https://github.com/outpunk/postcss-modules.
-  //
   const processor = postcss(opts.plugins || []);
+
+  let moduleClassnameMaps = null;
+  if (modules) {
+    moduleClassnameMaps = {};
+    processor.use(postcssModules({
+      getJSON (modulePath, json) {
+        moduleClassnameMaps[modulePath] = json;
+      }
+    }));
+  }
 
   checkMode(mode);
 
@@ -51,7 +57,9 @@ export default function (opts = {}) {
         return override.CONTINUE;
       }
       return assign({}, module, {
-        ast: postcss.parse(module.rawSource)
+        ast: postcss.parse(module.rawSource, {
+          from: module.path
+        })
       });
     });
 
@@ -108,7 +116,7 @@ export default function (opts = {}) {
       // Output a .css file for per-bundle CSS modules.  If in CSS module
       // mode, instead return a mapping of original and mapped class names.
       if (mode === "bundle") {
-        return generateCssBundles.call(this, bundles);
+        return generateCssBundles.call(this, bundles, moduleClassnameMaps);
       }
 
       // Transforms CSS modules into separate distinct CSS output bundles, and
@@ -144,7 +152,7 @@ export default function (opts = {}) {
     /**
      * No extra work needs to occur here.
      */
-    override("constructBundle", (bundle) => {
+    override("constructBundle", bundle => {
       if (bundle.type !== "css") {
         return override.CONTINUE;
       }
