@@ -41,6 +41,10 @@ export function getPackagesDir (opts = {}) {
   return path.join(getBaseDir(opts), "packages");
 }
 
+export function getTestsRootPath (opts = {}) {
+  return path.join(getBaseDir(opts), "tests");
+}
+
 export function getPackageNames (packagesDir) {
   return fs.readdirSync(packagesDir)
     .filter(pkgName => fs.existsSync(path.join(packagesDir, pkgName, "package.json")));

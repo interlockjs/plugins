@@ -6,6 +6,7 @@ import {
   log,
   getPackagesDir,
   getPackageNames,
+  getTestsRootPath,
   getArgs,
   includes,
   isDirOrSymlink
@@ -70,11 +71,28 @@ function linkPackages (packageNames, opts) {
   }, Promise.resolve());
 }
 
+function linkTestPackages (packageNames, opts) {
+  const nmPath = path.join(opts.testsRootPath, "node_modules");
+  if (!isDirOrSymlink(nmPath)) { fs.mkdirSync(nmPath); }
+
+  return packageNames.reduce((p, packageName) => {
+    const linkSource = path.join(opts.packagesDir, packageName);
+    const packageJson = require(path.join(linkSource, "package.json"));
+    const realName = packageJson.name;
+
+    return p.then(() =>
+      exec(`ln -s "${linkSource}" ${realName}`, { cwd: nmPath })
+    );
+  }, Promise.resolve());
+}
+
 export default function link (opts = {}) {
   const packagesDir = getPackagesDir(opts);
   const packageNames = getPackageNames(packagesDir);
+  const testsRootPath = getTestsRootPath(opts);
 
   linkPackages(packageNames, Object.assign({ packagesDir }, opts))
+    .then(() => linkTestPackages(packageNames, Object.assign({ packagesDir, testsRootPath })))
     .catch(err => opts.verbose && log("An error occurred:", err));
 }
 
