@@ -2,7 +2,7 @@ import { getFilesFromConfig, constructEnv } from "interlock-test-helper";
 
 
 describe("interlock-css", () => {
-  describe("in bundle mode", () => {
+  describe("in bundle mode with css modules enabled", () => {
     let files;
 
     before(() => {
