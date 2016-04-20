@@ -1,12 +1,39 @@
+import path from "path";
+
 import { getFilesFromConfig, constructEnv } from "interlock-test-helper";
+import css from "interlock-css";
+
+
+const getConfig = opts => ({
+  ns: "test-namespace",
+
+  srcRoot: path.join(__dirname, opts.srcRoot || "src"),
+  destRoot: path.join(__dirname, "actual"),
+  pretty: true,
+
+  entry: opts.entry,
+  plugins: [
+    css(opts.cssOpts)
+  ]
+});
 
 
 describe("interlock-css", () => {
   describe("in bundle mode with css modules enabled", () => {
     let files;
 
+    const config = getConfig({
+      entry: {
+        "./a.js": { dest: "a.bundle.js" },
+        "./b.css": { dest: "b.bundle.css" }
+      },
+      cssOpts: {
+        mode: "bundle",
+        modules: true
+      }      
+    });
+
     before(() => {
-      const config = require("./ilk.config"); // eslint-disable-line global-require
       return getFilesFromConfig(config).then(_files => files = _files);
     });
 
