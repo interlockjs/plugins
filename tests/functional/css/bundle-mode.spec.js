@@ -7,7 +7,7 @@ import css from "interlock-css";
 const getConfig = opts => ({
   ns: "test-namespace",
 
-  srcRoot: path.join(__dirname, opts.srcRoot || "src"),
+  srcRoot: path.join(__dirname, "bundle-mode"),
   destRoot: path.join(__dirname, "actual"),
   pretty: true,
 
