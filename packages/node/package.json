@@ -1,0 +1,20 @@
+{
+  "name": "interlock-node",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/plugins.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/plugins/issues"
+  },
+  "homepage": "https://github.com/interlockjs/plugins/packages/node#readme",
+  "dependencies": {
+    "babel-types": "^6.7.0",
+    "lodash": "^4.6.1"
+  }
+}
