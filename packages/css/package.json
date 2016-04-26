@@ -2,7 +2,7 @@
   "name": "interlock-css",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/interlockjs/css.git"

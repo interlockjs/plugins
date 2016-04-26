@@ -13,7 +13,7 @@
     "lint": "eslint --ext .js --ext .jst  ./packages/**",
     "postinstall": "npm run install-packages",
     "test": "npm run test-functional",
-    "test-functional": "mocha --compilers js:babel-register tests/functional/index.js"
+    "test-functional": "mocha --compilers js:babel-core/register tests/functional/index.js"
   },
   "repository": {
     "type": "git",
@@ -31,10 +31,10 @@
   "devDependencies": {
     "@divmain/eslint-config-defaults": "10.0.0",
     "babel-cli": "^6.5.1",
+    "babel-core": "^6.7.7",
     "babel-eslint": "^6.0.0",
     "babel-polyfill": "^6.5.0",
     "babel-preset-nodejs-lts": "^1.2.1",
-    "babel-register": "^6.7.2",
     "chai": "^3.5.0",
     "eslint": "^2.2.0",
     "eslint-plugin-filenames": "^0.2.0",
