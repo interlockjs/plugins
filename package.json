@@ -34,11 +34,13 @@
     "babel-eslint": "^6.0.0",
     "babel-polyfill": "^6.5.0",
     "babel-preset-nodejs-lts": "^1.2.1",
+    "babel-register": "^6.7.2",
     "chai": "^3.5.0",
     "eslint": "^2.2.0",
     "eslint-plugin-filenames": "^0.2.0",
     "glob": "^7.0.0",
     "interlock-test-helper": "^0.2.0",
+    "minimist": "^1.2.0",
     "mocha": "^2.4.5",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0"
