@@ -63,9 +63,17 @@ export default function (opts = {}) {
     override("constructBundle", bundle => {
       // Plugins may transform `bundle.modules` but not `bundle.module`.
       const module = bundle.modules && bundle.modules[0] || bundle.module;
+      const type = module && module.type || bundle.type;
+
+      // Append `.js` onto filenames of non-JS bundles that have since been
+      // transformed into JS.
+      const dest = type === "javascript" && !/\.js$/.test(bundle.dest) ?
+        `${bundle.dest}.js` :
+        bundle.dest;
 
       return assign({}, bundle, {
-        type: module && module.type || bundle.type,
+        dest,
+        type,
         ast: module && module.ast || bundle.ast
       })
     });
