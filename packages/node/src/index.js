@@ -1,4 +1,4 @@
-import { chain, assign } from "lodash";
+import { chain, assign, includes, values } from "lodash";
 import * as t from "babel-types";
 
 
@@ -35,11 +35,19 @@ export default function (opts = {}) {
     // to the output dir identical to the input module's path relative to the source
     // root.
     override("getBundleSeeds", function (moduleSeeds, modulesByPath) {
+      const entries = chain(moduleSeeds)
+        .values()
+        .map(moduleSeed => [moduleSeed.path, true])
+        .fromPairs()
+        .value();
+
+      const entryModules = values(moduleSeeds).map(moduleSeed => modulesByPath[moduleSeed.path]);
+
       return Promise.all(Object.keys(modulesByPath).map(modulePath => this.initBundle({
         dest: modulesByPath[modulePath].nsPath,
         module: modulesByPath[modulePath],
         moduleHashes: [modulesByPath[modulePath].hash],
-        isEntryPt: false,
+        isEntryPt: !!entries[modulePath],
         type: modulesByPath[modulePath].type,
         // This is not strictly necessary, but might help compatibility with other plugins.
         excludeRuntime: true
@@ -53,8 +61,12 @@ export default function (opts = {}) {
     // No need to do anything fancy here - a bundle's AST should match its input
     // module's transformed AST exactly.
     override("constructBundle", bundle => {
+      // Plugins may transform `bundle.modules` but not `bundle.module`.
+      const module = bundle.modules && bundle.modules[0] || bundle.module;
+
       return assign({}, bundle, {
-        ast: bundle.module.ast
+        type: module && module.type || bundle.type,
+        ast: module && module.ast || bundle.ast
       })
     });
   };

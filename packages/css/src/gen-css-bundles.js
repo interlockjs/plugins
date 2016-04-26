@@ -63,8 +63,21 @@ export default function generateCssBundles (bundles, moduleClassnameMaps) {
   const cssBundleSeeds = [];
   const originBundleCssBundleMap = {};
 
+  /**
+   * Extract out the CSS modules from each JavaScript bundle, placing each set
+   * into a newly created CSS bundle.
+   */
   bundles.forEach((bundle, bIdx) => {
-    if (bundle.type !== "javascript") { return; }
+    if (
+      // Build dynamic CSS bundles for JavaScript bundles.
+      bundle.type !== "javascript" &&
+      // Build dynamic CSS bundles for CSS bundles that aren't entry-points.
+      // This condition will occur when `interlock-css` is combined with
+      // `interlock-node`, where a bundle is generated for every input module.
+      !(bundle.type === "css" && !bundle.isEntryPt)
+    ) {
+      return;
+    }
 
     const cssModules = bundle.modules.filter(module => module.type === "css");
 
