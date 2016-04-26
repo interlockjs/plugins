@@ -4,6 +4,8 @@ machine:
 
 test:
   override:
+    - npm run link
+    - npm run build
     - npm run check
 
 notify:
