@@ -7,6 +7,7 @@
   "scripts": {
     "build": "npm run build-packages",
     "build-packages": "babel-node infra/build.js --verbose",
+    "check": "npm run lint && npm run test",
     "install-packages": "babel-node infra/install.js --verbose",
     "link": "babel-node infra/link.js --verbose",
     "lint": "eslint --ext .js --ext .jst  ./packages/**",
@@ -30,7 +31,7 @@
   "devDependencies": {
     "@divmain/eslint-config-defaults": "10.0.0",
     "babel-cli": "^6.5.1",
-    "babel-eslint": "^5.0.0",
+    "babel-eslint": "^6.0.0",
     "babel-polyfill": "^6.5.0",
     "babel-preset-nodejs-lts": "^1.2.1",
     "chai": "^3.5.0",

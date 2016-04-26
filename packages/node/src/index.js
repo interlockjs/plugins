@@ -1,11 +1,10 @@
-import { chain, assign, includes, values } from "lodash";
-import * as t from "babel-types";
+import { chain, assign } from "lodash";
 
 
-const isRelativeImport = /^(\.\.?)?\//
+const isRelativeImport = /^(\.\.?)?\//;
 
 
-export default function (opts = {}) {
+export default function (/* opts = {} */) {
   return (override, transform) => {
 
     // Filter out any require strings that aren't relative paths.
@@ -41,8 +40,6 @@ export default function (opts = {}) {
         .fromPairs()
         .value();
 
-      const entryModules = values(moduleSeeds).map(moduleSeed => modulesByPath[moduleSeed.path]);
-
       return Promise.all(Object.keys(modulesByPath).map(modulePath => this.initBundle({
         dest: modulesByPath[modulePath].nsPath,
         module: modulesByPath[modulePath],
@@ -75,7 +72,7 @@ export default function (opts = {}) {
         dest,
         type,
         ast: module && module.ast || bundle.ast
-      })
+      });
     });
   };
 }

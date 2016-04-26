@@ -14,7 +14,6 @@
   },
   "homepage": "https://github.com/interlockjs/plugins/packages/node#readme",
   "dependencies": {
-    "babel-types": "^6.7.0",
     "lodash": "^4.6.1"
   }
 }
