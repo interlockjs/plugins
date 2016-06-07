@@ -1,6 +1,4 @@
 /* eslint-disable global-require */
-var path = require("path");
-
 var useTranspiled = true; // eslint-disable-line no-var
 
 try {
@@ -13,5 +11,5 @@ if (useTranspiled) {
   module.exports = require("./lib");
 } else {
   require("babel-register");
-  module.exports = require(path.join(__dirname, "./src"));
+  module.exports = require("./src");
 }
