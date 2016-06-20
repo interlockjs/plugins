@@ -25,7 +25,7 @@ export default function (opts = {}) {
     transform("setModuleType", module => {
       const validLoaders = findValidLoaders(opts.loaders, module);
       const loadersHaveTranspileTarget = validLoaders.some(
-        loader => loader.transpileTarget
+        loader => loader.moduleType
       );
 
       if (!loadersHaveTranspileTarget) {
@@ -33,22 +33,22 @@ export default function (opts = {}) {
       }
 
       const targetExtension = validLoaders.reduce((prev, next) => {
-        return prev.transpileTarget === next.transpileTarget
-          ? next.transpileTarget : false;
+        return prev.moduleType === next.moduleType
+          ? next.moduleType : false;
       });
 
       if (!targetExtension) {
         throw new Error(
           `
           You have multiple loaders that apply to the same files,
-          but specify different transpileTargets. Please check your
+          but specify different moduleTypes. Please check your
           configuration.
           `
         );
       }
 
       return assign({}, module, {
-        type: targetExtension.transpileTarget
+        type: targetExtension.moduleType
       });
     });
 
@@ -82,7 +82,8 @@ export default function (opts = {}) {
             throw new Error(
               `
               This plugin does not currently support loaders that
-              use emitFile(). Interlock may support this in the future.`
+              use emitFile(). Interlock may support this in the future.
+              `
             );
           },
           minimize: true,

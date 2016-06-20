@@ -2,7 +2,7 @@
   "name": "interlock-webpack-loaders",
   "version": "0.1.0",
   "description": "Allows Interlock to consume Webpack loaders.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/interlockjs/webpack-loaders.git"
