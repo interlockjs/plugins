@@ -1,5 +1,5 @@
 {
-  "name": "interlock-html",
+  "name": "interlock-browserify-transforms",
   "version": "0.1.0",
   "description": "",
   "main": "lib/index.js",
@@ -12,10 +12,8 @@
   "bugs": {
     "url": "https://github.com/interlockjs/plugins/issues"
   },
-  "homepage": "https://github.com/interlockjs/plugins#readme",
+  "homepage": "https://github.com/interlockjs/plugins/tree/master/packages/browserify-transforms#readme",
   "dependencies": {
-    "babel-generator": "^6.7.2",
-    "cheerio": "^0.20.0",
-    "lodash": "^4.6.1"
+    "concat-stream": "^1.5.1"
   }
 }

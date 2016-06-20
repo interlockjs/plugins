@@ -24,7 +24,7 @@ const exportObjTmpl = getTemplate("export-object", node => t.program([node]));
  */
 function replaceCssModules (bundles, cssBundles, originBundleCssBundleMap, moduleClassnameMaps) {
 
-  const cssBundlesStats = cssBundles.map(bundle => {
+  const cssBundlesStats = moduleClassnameMaps && cssBundles.map(bundle => {
     const moduleClassnames = bundle.modules.map(module => moduleClassnameMaps[module.path]);
     const combinedJson = assign(...[{}].concat(moduleClassnames));
 
@@ -34,7 +34,7 @@ function replaceCssModules (bundles, cssBundles, originBundleCssBundleMap, modul
       moduleHashes: [],
       raw: JSON.stringify(combinedJson)
     };
-  });
+  }) || [];
 
   return bundles.map((bundle, bIdx) => {
     if (!(bIdx in originBundleCssBundleMap)) { return bundle; }
@@ -63,8 +63,21 @@ export default function generateCssBundles (bundles, moduleClassnameMaps) {
   const cssBundleSeeds = [];
   const originBundleCssBundleMap = {};
 
+  /**
+   * Extract out the CSS modules from each JavaScript bundle, placing each set
+   * into a newly created CSS bundle.
+   */
   bundles.forEach((bundle, bIdx) => {
-    if (bundle.type !== "javascript") { return; }
+    if (
+      // Build dynamic CSS bundles for JavaScript bundles.
+      bundle.type !== "javascript" &&
+      // Build dynamic CSS bundles for CSS bundles that aren't entry-points.
+      // This condition will occur when `interlock-css` is combined with
+      // `interlock-node`, where a bundle is generated for every input module.
+      !(bundle.type === "css" && !bundle.isEntryPt)
+    ) {
+      return;
+    }
 
     const cssModules = bundle.modules.filter(module => module.type === "css");
 

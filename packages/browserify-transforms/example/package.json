@@ -1,0 +1,14 @@
+{
+  "name": "interlock-browserify-transforms-example",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app/example.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "through": "^2.3.8"
+  }
+}

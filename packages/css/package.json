@@ -2,7 +2,7 @@
   "name": "interlock-css",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/interlockjs/css.git"
@@ -15,6 +15,7 @@
   "homepage": "https://github.com/interlockjs/css#readme",
   "dependencies": {
     "babel-template": "^6.7.0",
+    "babel-types": "^6.7.7",
     "lodash": "^4.6.1",
     "postcss": "^5.0.8",
     "postcss-modules": "^0.4.0"
