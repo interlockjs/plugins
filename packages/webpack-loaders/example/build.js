@@ -1,6 +1,6 @@
 const path = require("path");
 
-const webpackLoaders = require("..");
+const webpackLoaders = require("interlock-webpack-loaders");
 const Interlock = require("interlock");
 const css = require("interlock-css");
 const autoprefixer = require("autoprefixer");
@@ -31,7 +31,7 @@ const ilk = new Interlock({
         {
           test: /\.scss$/,
           loader: require.resolve("sass-loader"),
-          transpileTarget: "css"
+          moduleType: "css"
         },
         {
           test: /\.txt$/,
