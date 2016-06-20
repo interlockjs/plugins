@@ -81,7 +81,7 @@ function linkTestPackages (packageNames, opts) {
     const realName = packageJson.name;
 
     return p.then(() =>
-      exec(`ln -s "${linkSource}" ${realName}`, { cwd: nmPath })
+      exec(`ln -s "${linkSource}" ${nmPath}/${realName}`)
     );
   }, Promise.resolve());
 }
