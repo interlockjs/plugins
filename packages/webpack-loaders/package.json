@@ -1,0 +1,22 @@
+{
+  "name": "interlock-webpack-loaders",
+  "version": "0.1.0",
+  "description": "Allows Interlock to consume Webpack loaders.",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/webpack-loaders.git"
+  },
+  "author": "Tyler Thompson <tyler@tylerpaulthompson.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/webpack-loaders/issues"
+  },
+  "homepage": "https://github.com/interlockjs/webpack-loaders#readme",
+  "dependencies": {
+    "babel-template": "^6.7.0",
+    "loader-runner": "^2.1.1",
+    "lodash": "^4.11.1",
+    "webpack-combine-loaders": "^2.0.0"
+  }
+}
