@@ -14,7 +14,7 @@ const getConfig = opts => ({
 
   entry: opts.entry,
   plugins: [
-  	browserifyTransforms(opts.transforms),
+    browserifyTransforms(opts.transforms),
     css(opts.cssOpts)
   ]
 });
@@ -41,15 +41,15 @@ function fakeRequire(files, path) {
 
 
 describe("interlock-browserify-transforms + interlock-css", () => {
-	describe("transforming json to css to javascript", () => {
+  describe("transforming json to css to javascript", () => {
     const config = getConfig({
       entry: {
         "./a.js": "a.bundle.js"
       },
       transforms: [{
-      	transform: require("./json-to-css/transform-json-to-css"),
-      	filter: /\.styles\.json$/,
-      	moduleType: "css"
+        transform: require("./json-to-css/transform-json-to-css"),
+        filter: /\.styles\.json$/,
+        moduleType: "css"
       }],
       cssOpts: {
         mode: "bundle"
@@ -75,5 +75,5 @@ describe("interlock-browserify-transforms + interlock-css", () => {
         expect(cssFile).to.contain("height: 4px");
       });
     });
-	});
+  });
 });
