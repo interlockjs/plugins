@@ -2,9 +2,8 @@ env:
   browser: true
 
 globals:
-  STYLE_ID: true
-  RULES: true
-  EXPORT_VALUE: true
+  BASE_URL: true
+  r: true
 
 rules:
   no-var: 0
