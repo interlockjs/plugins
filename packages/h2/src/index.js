@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-import { chain, map, assign } from "lodash";
+import { chain, map, assign, filter } from "lodash";
 import * as t from "babel-types";
 import template from "interlock/lib/util/template";
 import initBundle from "interlock/lib/compile/bundles/init";
@@ -28,7 +28,9 @@ function getSeedsByPath (definitions, moduleSeeds) {
 
 export default function (opts = {}) {
   const {
-    baseUrl = "/"
+    baseUrl = "/",
+    pushManifest = "push-manifest.json",
+    pushManifestPretty = false
   } = opts;
 
   return (override, transform) => {
@@ -74,6 +76,43 @@ export default function (opts = {}) {
       return overrideGetUrlTmpl({
         BASE_URL: t.stringLiteral(baseUrl)
       });
+    });
+
+    // Build a bundle dependency graph, such that when a JS bundle is
+    // requested, the server can know what other files will be requested
+    // once the bundle loads in the client browser.
+    function buildPushManifest (bundles, manifestFilename) {
+      const manifestableBundles = filter(bundles, bundle => bundle.module);
+
+      const bundlesByModuleId = chain(manifestableBundles)
+        .map(bundle => [ bundle.module.id, bundle ])
+        .fromPairs()
+        .value();
+
+      const bundleDepGraph = chain(manifestableBundles)
+        .map(bundle => {
+          const deepDependencyFilenames = map(bundle.module.deepDependencies,
+            dependency => bundlesByModuleId[dependency.id].dest
+          );
+          return [ bundle.dest, deepDependencyFilenames ];
+        })
+        .fromPairs()
+        .value();
+
+      const output = pushManifestPretty ?
+        JSON.stringify(bundleDepGraph, null, 2) :
+        JSON.stringify(bundleDepGraph);
+
+      return {
+        raw: output,
+        dest: manifestFilename
+      };
+    }
+
+    transform("emitRawBundles", bundles => {
+      return pushManifest ?
+        bundles.concat(buildPushManifest(bundles, pushManifest)) :
+        bundles;
     });
   };
 }
