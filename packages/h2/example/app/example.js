@@ -1,4 +1,4 @@
 var childModule = require("./child");
-var _ = require("lodash");
+var each = require("lodash/each");
 
-_.each(childModule, _.bind(console.log, console));
+each(childModule, console.log.bind(console));
