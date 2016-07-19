@@ -34,12 +34,12 @@ export default function (opts = {}) {
   } = opts;
 
   return (override, transform) => {
-    // Prepend `h2:` to each module's moduleId.  This disambiguates
+    // Prepend `h2_` to each module's moduleId.  This disambiguates
     // H2 modules from standard modules, and signifies that the module
     // should be loaded using a non-standard mechanism, to
     transform("generateModuleId", module => {
       return assign({}, module, {
-        id: `h2:${module.id}`
+        id: `h2_${module.id}`
       });
     });
 
@@ -67,7 +67,7 @@ export default function (opts = {}) {
     });
 
     // We'll be modifying the behavior of the default provider, such
-    // that when a moduleId prefixed with `h2:` comes along, a URL
+    // that when a moduleId prefixed with `h2_` comes along, a URL
     // will be generated for it directly, rather than consulting the
     // moduleId-to-bundleUrl hash created here.
     override("getUrls", () => ({}));

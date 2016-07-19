@@ -1,6 +1,6 @@
 var __getUrl = r.getUrl;
 r.getUrl = function (moduleId) {
-  return /h2:/.test(moduleId) ?
+  return /h2_/.test(moduleId) ?
     BASE_URL + moduleId + ".js" :
     __getUrl(moduleId);
 };
