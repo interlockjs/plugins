@@ -52,10 +52,13 @@ export default function (opts = {}) {
       const bundleSeedsPs = map(moduleMaps.byAbsPath, (module, absPath) => {
         const entryConfig = entryModuleDefs[absPath];
         const splitConfig = splitModuleDefs[absPath];
+        const dest =
+          entryConfig && entryConfig.dest ||
+          splitConfig && splitConfig.dest ||
+          "[primaryModuleId].js";
 
         return initBundle.call(this, {
-          dest: entryConfig && entryConfig.dest ||
-            splitConfig && splitConfig.dest,
+          dest,
           module,
           moduleHashes: [ module.hash ],
           isEntryPt: !!entryConfig,
