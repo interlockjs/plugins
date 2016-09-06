@@ -1,0 +1,20 @@
+{
+  "name": "interlock-babili",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/plugins.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/plugins/issues"
+  },
+  "homepage": "https://github.com/interlockjs/plugins/packages/babili#readme",
+  "dependencies": {
+    "babel-preset-babili": "0.0.2",
+    "babel-types": "^6.15.0"
+  }
+}
