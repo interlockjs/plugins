@@ -1,5 +1,10 @@
+import Promise from "bluebird";
+import fs from "fs";
+
+
 const assign = Object.assign;
 const includes = (arr, match) => arr.reduce((memo, el) => memo || el === match, false);
+const readFilePromise = Promise.promisify(fs.readFile, fs);
 
 
 export default function (opts = {}) {
@@ -17,6 +22,15 @@ export default function (opts = {}) {
   };
 
   return (override, transform) => {
+    override("readSource", module => {
+      if (!isRawFile(module.path)) {
+        return override.CONTINUE;
+      }
+
+      return readFilePromise(module.path)
+        .then(rawSourceBuffer => assign({}, module, { rawSource: rawSourceBuffer }));
+    });
+
     transform("setModuleType", module => {
       return isRawFile(module.path) ?
         assign({}, module, { type: "raw" }) :
