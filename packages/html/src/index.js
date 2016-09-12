@@ -152,7 +152,7 @@ export default function (opts = {}) {
       return chain(urls)
         .map((url, moduleId) => [moduleId, url])
         .filter(([, url]) => !isHtmlFile.test(url))
-        .object()
+        .fromPairs()
         .value();
     });
 
