@@ -1,0 +1,22 @@
+{
+  "name": "interlock-pug",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/plugins.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "bugs": {
+    "url": "https://github.com/interlockjs/plugins/issues"
+  },
+  "homepage": "https://github.com/interlockjs/plugins/packages/pug#readme",
+  "dependencies": {
+    "pug": "^2.0.0-beta6"
+  }
+}
