@@ -1,0 +1,22 @@
+{
+  "name": "interlock-stylus",
+  "version": "0.1.1",
+  "description": "",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/plugins.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "bugs": {
+    "url": "https://github.com/interlockjs/plugins/issues"
+  },
+  "homepage": "https://github.com/interlockjs/plugins/packages/stylus#readme",
+  "dependencies": {
+    "stylus": "^0.54.5"
+  }
+}
