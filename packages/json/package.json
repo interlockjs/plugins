@@ -5,12 +5,12 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/interlockjs/json.git"
+    "url": "git+https://github.com/interlockjs/plugins.git"
   },
   "author": "Dale Bustad <dale@divmain.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/interlockjs/json/issues"
+    "url": "https://github.com/interlockjs/plugins/issues"
   },
-  "homepage": "https://github.com/interlockjs/json#readme"
+  "homepage": "https://github.com/interlockjs/plugins/packages/json#readme"
 }
