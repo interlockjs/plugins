@@ -1,0 +1,22 @@
+{
+  "name": "interlock-html-minifier",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/plugins.git"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/plugins/issues"
+  },
+  "homepage": "https://github.com/interlockjs/plugins/packages/html-minifier#readme",
+  "dependencies": {
+    "html-minifier": "^3.0.3"
+  }
+}
