@@ -126,7 +126,7 @@ export default function (opts = {}) {
      * HTML file.
      */
     override("initBundle", bundleOpts => {
-      if (bundleOpts.module.type !== "html") {
+      if (!bundleOpts.module || bundleOpts.module.type !== "html") {
         return override.CONTINUE;
       }
       return assign({}, bundleOpts, {

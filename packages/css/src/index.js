@@ -98,7 +98,7 @@ export default function (opts = {}) {
      * module.
      */
     override("initBundle", bundleOpts => {
-      if (bundleOpts.module.type !== "css") {
+      if (!bundleOpts.module || bundleOpts.module.type !== "css") {
         return override.CONTINUE;
       }
 
