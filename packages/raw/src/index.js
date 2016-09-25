@@ -62,7 +62,7 @@ export default function (opts = {}) {
     });
 
     override("initBundle", bundleOpts => {
-      return (bundleOpts.module && bundleOpts.module.type === "raw") ?
+      return bundleOpts.module && bundleOpts.module.type === "raw" ?
         assign({}, bundleOpts, { type: "raw" }) :
         override.CONTINUE;
     });
