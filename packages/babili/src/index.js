@@ -7,7 +7,8 @@ const plugins = [
   // This plugin does not yet work correctly with classes and ES6 exports.
   // "babel-plugin-minify-dead-code-elimination",
   "babel-plugin-minify-flip-comparisons",
-  "babel-plugin-minify-guarded-expressions",
+  // This plugin incorrectly minifies `undefined || 0` to `undefined`.
+  // "babel-plugin-minify-guarded-expressions",
   "babel-plugin-minify-infinity",
   "babel-plugin-minify-mangle-names",
   "babel-plugin-minify-replace",
