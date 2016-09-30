@@ -51,7 +51,7 @@ module.exports = (opts = {}) => {
       });
 
       // Add the `manifest` attr to the HTML root element.
-      $("html").attr("manifest", `/${manifestFilename}`)
+      $("html").attr("manifest", `/${manifestFilename}`);
 
       return module;
     });
