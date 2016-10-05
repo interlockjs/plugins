@@ -2,7 +2,7 @@
 
 ## Description
 
-With this plugin, you can require a `.json` file from your JavaScript.  Imported JSON will behave as a normal JS object.
+Used to require a `.json` file from your JavaScript.  Imported JSON will behave as a normal JS object.
 
 ## Usage
 
@@ -28,7 +28,7 @@ module.exports = {
 
 ## Options
 
-- `filter` - A regular expression used to determine which files to import as JSON. _.(default: `/\.json$/`)_
+- `filter` - A regular expression used to determine which files to import as JSON.  Defaults to `/\.json$/`.
 
 ## Example
 

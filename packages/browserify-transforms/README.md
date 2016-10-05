@@ -1,6 +1,31 @@
 # interlock-browserify-transforms
 
-Apply Browserify transforms to your source modules.
+Used to apply Browserify transforms to your source modules.
+
+## Usage
+
+Make sure you have installed the plugin as a dependency in your project:
+
+```
+$ npm install --save-dev interlock-browserify-transforms
+```
+
+Then, include it in your config:
+
+```javascript
+const browserifyTransforms = require("interlock-browserify-transforms");
+
+module.exports = {
+  // ... config options
+  plugins: [
+    browserifyTransforms([
+      // ... transforms definitions here
+    ])
+    // .. other plugins
+  ]
+};
+```
+
 
 ## Definitions
 
