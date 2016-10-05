@@ -2,26 +2,46 @@
 
 ## Description
 
-TODO
-
-**Note:**  Issues with this plugin should be reported on the Interlock plugin [issue tracker](https://github.com/interlockjs/plugins/issues).
+With this plugin, you can require a `.json` file from your JavaScript.  Imported JSON will behave as a normal JS object.
 
 ## Usage
 
-TODO
+Make sure you have installed the plugin as a dependency in your project:
 
-##  Installation
+```
+$ npm install --save-dev interlock-json
+```
 
-TODO
+Then, include it in your config:
+
+```javascript
+const interlockJson = require("interlock-json");
+
+module.exports = {
+  // ... config options
+  plugins: [
+    interlockJson()
+    // .. other plugins
+  ]
+};
+```
 
 ## Options
 
-TODO
+- `filter` - A regular expression used to determine which files to import as JSON. _.(default: `/\.json$/`)_
 
 ## Example
 
-TODO
+**index.js:**
 
-## Troubleshooting
+```javascript
+const myData = require("./my-data.json");
+console.log(myData.prop);
+```
 
-TODO
+**my-data.json:**
+```json
+{
+  "prop": "a string"
+}
+```
