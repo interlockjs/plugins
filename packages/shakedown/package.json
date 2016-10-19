@@ -1,0 +1,16 @@
+{
+  "name": "interlock-shakedown",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlockjs/plugins.git"
+  },
+  "author": "Dale Bustad <dale@divmain.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/interlockjs/plugins/issues"
+  },
+  "homepage": "https://github.com/interlockjs/plugins/packages/shakedown#readme"
+}
